@@ -19,7 +19,6 @@ public class LevelEditor : Editor
         {
             myScript.DrawLevel();
             LevelController.editMode = false;
-            Debug.Log(LevelController.editMode);
         }
 
         GUI.enabled = LevelController.editMode;
@@ -36,6 +35,13 @@ public class LevelEditor : Editor
         if (GUILayout.Button("Save"))
         {
             myScript.SaveLevel();
+            LevelController.createMode = true;
+            LevelController.editMode = true;
+        }
+        
+        if (GUILayout.Button("Stop"))
+        {
+            myScript.CheckLevelEdit();
             LevelController.createMode = true;
             LevelController.editMode = true;
         }

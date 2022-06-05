@@ -84,7 +84,7 @@ public class LevelController : MonoBehaviour
         PrefabUtility.UnpackPrefabInstance(levelEdit, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
     }
 
-    void CheckLevelEdit()
+    public void CheckLevelEdit()
     {
         if (levelEdit != null)
             DestroyImmediate(levelEdit);
