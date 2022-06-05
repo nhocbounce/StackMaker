@@ -22,7 +22,9 @@ public class LevelController : MonoBehaviour
     }
 
     ProgressData curProgress;
-    GameObject curLevel, prefabLevel, levelTemplate ,levelEdit;
+    GameObject curLevel, prefabLevel, levelTemplate, levelEdit;
+
+    public static bool createMode = true, editMode = true;
 
     [SerializeField]
     int level;
@@ -68,13 +70,29 @@ public class LevelController : MonoBehaviour
 
     public void DrawLevel()
     {
+        CheckLevelEdit();
         levelTemplate = Resources.Load<GameObject>(Constants.LEVELTEMPLATEPATH);
-        levelEdit = Instantiate(levelTemplate);
+        levelEdit = PrefabUtility.InstantiatePrefab(levelTemplate) as GameObject;
+        PrefabUtility.UnpackPrefabInstance(levelEdit, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
     }
-    
+
+    public void EditLevel()
+    {
+        CheckLevelEdit();
+        levelTemplate = Resources.Load<GameObject>(Constants.LEVELPATH + level.ToString());
+        levelEdit = PrefabUtility.InstantiatePrefab(levelTemplate) as GameObject;
+        PrefabUtility.UnpackPrefabInstance(levelEdit, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
+    }
+
+    void CheckLevelEdit()
+    {
+        if (levelEdit != null)
+            DestroyImmediate(levelEdit);
+    }
+
     public void SaveLevel()
     {
-        PrefabUtility.SaveAsPrefabAsset(levelEdit,Constants.RESOURCESFOLDER + Constants.LEVELPATH + level.ToString() + Constants.PREFABEXTENSION, out bool success);
+        PrefabUtility.SaveAsPrefabAsset(levelEdit, Constants.RESOURCESFOLDER + Constants.LEVELPATH + level.ToString() + Constants.PREFABEXTENSION, out bool success);
         if (success == true)
         {
             Debug.Log("Level " + level.ToString() + " was created successfully");
